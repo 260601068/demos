@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+<context:component-scan base-package="com.wjl.sshv"></context:component-scan>
+
+<!-- struts2中的action必须配置成非单例的 -->
+<bean id="loginAction" class="com.wjl.sshv.sshv.LoginAction" scope="prototype">
+<!-- <property name="User" ref="user"></property> -->
+</bean>
+<bean id="user" class="com.wjl.sshv.sshv.User">
+</bean>
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="root"></property>
+		<property name="password" value="123"></property>
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/wjldb"></property>
+		<property name="initialPoolSize" value="5"></property>
+		<property name="maxPoolSize" value="10"></property>
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+		
+		<!-- hibernate.cfg.xml可以省略，其内容可以配置在这里;
+			  其中获取与当前线程相关的session配置项不能再写，其会自动交由spring的事务管理，所以修改相关的操作必须添加@Transactional注解
+		<property name="hibernateProperties">
+		<props>
+		<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+		<prop key="hibernate.show_sql">true</prop>
+		<prop key="hibernate.format_sql">true</prop>
+		<prop key="hibernate.hbm2ddl.auto">update</prop>
+		</props>
+		</property>
+		 -->
+<!-- 	使用基于hibernate注解的表映射类,则使用以下配置
+		<property name="packagesToScan">
+            <list>
+                <value>com.wjl.sshv.model</value>
+            </list>
+        </property> -->
+		<property name="mappingLocations" value="classpath:com/wjl/sshv/sshv/*.hbm.xml"></property>
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+<!-- 	可以用<tx:annotation-driven/>代替
+		<tx:advice id="txAdvice">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			
+			<tx:method name="purchase" propagation="REQUIRES_NEW"/>
+			
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut expression="execution(* com.wjl.sshv.sshv.MyService.*(..))"
+			id="txPointCut" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut" />
+	</aop:config> 
+	-->
+	<tx:annotation-driven/>
+</beans>
