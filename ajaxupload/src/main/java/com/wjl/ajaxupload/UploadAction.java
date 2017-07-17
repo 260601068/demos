@@ -15,17 +15,7 @@ import com.opensymphony.xwork2.ActionSupport;
 @Controller
 @Scope("prototype")
 public class UploadAction extends ActionSupport{
-	
-	private String res="upload ok";
-	
-	public String getRes() {
-		return res;
-	}
-
-	public void setRes(String res) {
-		this.res = res;
-	}
-
+//  file名字自定义，但是文件名和文件内容必须以下列格式命名
 	private File myfile;
 	private String myfileFileName;
 	private String myfileContentType;

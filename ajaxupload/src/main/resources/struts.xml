@@ -4,12 +4,19 @@
 	"http://struts.apache.org/dtds/struts-2.5.dtd">
 
 <struts>
-
+	 <constant name="struts.multipart.maxSize" value="10000000"/>
 	<package name="default" extends="struts-default,json-default">
+
 		<global-allowed-methods>regex:.*</global-allowed-methods>
 		<action name="upload" class="uploadAction">
+		<!-- fileUpload拦截器在默认栈中，如果没有特别要求可以不配置 -->
+		<interceptor-ref name="defaultStack">
+		<!-- 默认上传大小为2M，若该处设置大于2M则必须配置全局静态变量struts.multipart.maxSize大于该值 -->
+		<param name="fileUpload.maximumSize">5000000</param>
+		<param name="fileUpload.allowedExtensions">.txt,.png,.exe</param>
+		</interceptor-ref>
 		<result type="json">
-		<param name="root">res</param>
+		<param name="root">myfileFileName</param>
 		</result>
 		</action>
 	</package>

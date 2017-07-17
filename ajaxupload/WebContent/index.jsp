@@ -8,9 +8,11 @@
 <script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
 </head>
 <script type="text/javascript">
+/* struts2的多文件上传不能用input的multipart属性，只能用多个具有相同name属性的input上传，并在后台用File[]接收 */
 $(function(){
 	$("#upload").on("click",function(){
 		var formData=new FormData($("#myform")[0])
+		/* contentType为发送数据类型，dataType为接收数据类型 */
  			$.ajax({
 			type:"post",
 			url:"upload.action",
@@ -19,7 +21,9 @@ $(function(){
 			contentType:false,
 			dataType:"json",
 			success:function(data){
-				alert(data)
+				var filePath=$("[name='myfile']")[0].value;	//获取的filePath只有文件名是有效的，父路径统一为fakepath
+				var fileName=filePath.substring(filePath.lastIndexOf("\\")+1)
+				$("img").attr("src","upload/"+fileName) //可以直接访问部署目录（项目目录中可能没有）
 			}
 		})
 	})
@@ -29,5 +33,8 @@ $(function(){
 <form id="myform" enctype="multipart/form-data">
 <input name="myfile" type="file"><input id="upload" type="button" value="上传">
 </form>
+<div>
+<img src="">
+</div>
 </body>
 </html>
