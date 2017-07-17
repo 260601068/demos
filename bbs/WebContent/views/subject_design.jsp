@@ -23,24 +23,20 @@ $(function(){
 		})
 	})
 	$("#pictureSub").on("click",function(){
-		var formData=new FormData($('#pictureForm')[0]);
-		formData.append("a","wjl");
-	    $.ajax({
-	        url: "subject_addPicture",
-	        async: false,
-	        type: 'POST',
-	        cache: false,
-	        data: formData,
-	        processData: false,
-	        contentType: false,
-	        dataType:"json",
-	        success : function(data) {
-				alert("uploadPictureSuccess")
-	        },
-	    	error : function(data){
-	    		alert("error")
-	    	}
-	    });
+		var formData=new FormData($("#pictureForm")[0])
+ 			$.ajax({
+			type:"post",
+			url:"design_addPicture.action",
+			data:formData,
+			processData:false,
+			contentType:false,
+			dataType:"json",
+			success:function(data){
+				var filePath=$("[name='picture']")[0].value;
+				var fileName=filePath.substring(filePath.lastIndexOf("\\")+1)
+				$("#picturePane img").attr("src","../upload/"+fileName)
+			}
+		})
 	})
 	$("#video").on("click",function(){
 
@@ -90,10 +86,9 @@ $(function(){
 </div>
 <div class="tab-pane" id="picturePane">
 <form id="pictureForm" enctype="multipart/form-data">
-<input id="picture" name="picture" type="file">
-<button id="pictureSub" type="button">提交</button>
+<input name="picture" type="file"><input id="pictureSub" type="button" value="上传">
 </form>
-
+<img src="">
 </div>
 <div class="tab-pane" id="videoPane">
 <form>

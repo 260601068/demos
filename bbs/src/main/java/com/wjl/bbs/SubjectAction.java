@@ -47,10 +47,4 @@ public class SubjectAction extends ActionSupport{
 		
 		return "subject_detail";
 	}
-	
-	public String addPicture(){
-		 Object o=ServletActionContext.getRequest().getParameter("picture");
-		 System.out.println("o: "+o);
-		 return "addPicture";
-	}
 }

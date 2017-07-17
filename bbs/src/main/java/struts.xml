@@ -14,6 +14,8 @@
 		<action name="subject_*" class="subjectAction" method="{1}">
 			<result>/views/subject.jsp</result>
 			<result name="subject_detail">/views/subject_detail.jsp</result>
+		</action>
+		<action name="design_*" class="designAction" method="{1}">
 			<result name="addPicture" type="json"></result>
 		</action>
 		<action name="comment_*" class="commentAction" method="{1}">
