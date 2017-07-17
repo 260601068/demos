@@ -15,7 +15,7 @@ import com.opensymphony.xwork2.ActionSupport;
 @Controller
 @Scope("prototype")
 public class UploadAction extends ActionSupport{
-//  file名字自定义，但是文件名和文件内容必须以下列格式命名
+//  file名字必须与input的name相同，文件名和文件内容必须以下列格式命名
 	private File myfile;
 	private String myfileFileName;
 	private String myfileContentType;
