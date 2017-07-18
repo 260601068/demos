@@ -13,14 +13,20 @@
 <script type="text/javascript">
 $(function(){
 	
-	$("#text").on("click",function(){
-		$.ajax({
-			 url: "subject_addResource",
+	$("#textSub").on("click",function(){
+ 		var text=$("[name='text']").val()
+ 		
+ 		var reg=new RegExp("\r\n","g")
+ 		text=text.replace(reg,"<br>")
+ 		$.ajax({
+			 url: "design_addText",
 			 type: "POST",
-			 data: data,
-			 success: success,
-			 dataType: dataType
-		})
+			 data: {"text":text},
+			 dataType: "json",
+			 success: function(){
+				 $("#textPane p").text(text)
+			 }
+		}) 
 	})
 	$("#pictureSub").on("click",function(){
 		var formData=new FormData($("#pictureForm")[0])
@@ -32,35 +38,43 @@ $(function(){
 			contentType:false,
 			dataType:"json",
 			success:function(data){
-				var filePath=$("[name='picture']")[0].value;
+				var filePath=$("#picturePane [name='myfile']")[0].value;
 				var fileName=filePath.substring(filePath.lastIndexOf("\\")+1)
 				$("#picturePane img").attr("src","../upload/"+fileName)
 			}
 		})
 	})
-	$("#video").on("click",function(){
-
-	    $.ajax({
-	        url: ctx + "/xxx/upload",
-	        type: 'POST',
-	        cache: false,
-	        data: new FormData($('#infoLogoForm')[0]),
-	        processData: false,
-	        contentType: false,
-	        dataType:"json",
-	        beforeSend: function(){
-	            uploading = true;
-	        },
-	        success : function(data) {
-	            if (data.code == 1) {
-	                $("#logo").attr("src", data.msg);
-	            } else {
-	                showError(data.msg);
-	            }
-	            uploading = false;
-	        }
-	    });
+	$("#videoSub").on("click",function(){
+		var formData=new FormData($("#videoForm")[0])
+			$.ajax({
+		type:"post",
+		url:"design_addVideo.action",
+		data:formData,
+		processData:false,
+		contentType:false,
+		dataType:"json",
+		success:function(data){
+			var filePath=$("#videoPane [name='myfile']")[0].value;
+			var fileName=filePath.substring(filePath.lastIndexOf("\\")+1)
+			$("#videoPane video").attr("src","../upload/"+fileName)
+		}
 	})
+	})
+	
+  	$("#publish").on("click",function(){
+		var title=$("#title").val() 
+	 $("#publishModal").modal("hide")
+		$.ajax({
+			 url: "design_publish",
+			 type: "GET",
+			 data: {"title":title},
+			 dataType: "json",
+			 success: function(){
+				 
+			 }
+		})  
+	}) 
+	
 })
 
 /* function mychange(){
@@ -75,33 +89,47 @@ $(function(){
 <li class="active"><a href="#textPane" data-toggle="tab">添加文本</a></li>
 <li><a href="#picturePane" data-toggle="tab">添加图片</a></li>
 <li><a href="#videoPane" data-toggle="tab">添加视频</a></li>
+<button class="btn btn-info center-block" data-toggle="modal" data-target="#publishModal">添加标题</button>
 </ul>
 <div class="tab-content">
 <div class="tab-pane active" id="textPane">
-<form>
-<textarea rows="15" cols="120"></textarea><br/>
-<button id="text" type="submit">提交</button>
-</form>
+<textarea name="text" rows="15" cols="120"></textarea><br/>
+<button id="textSub" type="submit">保存</button>
+<p style="white-space:pre"></p>
 
 </div>
 <div class="tab-pane" id="picturePane">
 <form id="pictureForm" enctype="multipart/form-data">
-<input name="picture" type="file"><input id="pictureSub" type="button" value="上传">
+<input name="myfile" type="file"><input id="pictureSub" type="button" value="上传">
 </form>
 <img src="">
 </div>
 <div class="tab-pane" id="videoPane">
-<form>
-<input type="file">
-<button id="video" type="submit">提交</button>
+<form id="videoForm" enctype="multipart/form-data">
+<input name="myfile" type="file"><input id="videoSub" type="button" value="上传">
 </form>
+<video src="" controls="controls"  autoplay width="350px" height="350px">
+your browser does not support the video tag
+</video>
 </div>
 </div>
 
+<div id="publishModal" class="modal">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button class="close" data-dismiss="modal"><span>&times;</span></button>
+<h4 class="modal-title text-center">标题</h4>
+</div>
+<div class="modal-body">
+<textarea id="title" rows="7" cols="90"></textarea>
+</div>
+<div class="modal-footer">
+<button id="publish" class="btn btn-primary">发布主题</button>
+</div>
+</div>
+</div>
+</div>
 
-<!-- <form id="myform" action="">
-<input id="myinput" type="file" onchange="mychange()" multiple><br/>
-<input id="mysub" type="submit">
-</form> -->
 </body>
 </html>
