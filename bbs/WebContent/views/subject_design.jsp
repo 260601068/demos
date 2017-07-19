@@ -73,13 +73,6 @@ $(function(){
 	}) 
 	
 })
-
-/* function mychange(){
- 	var files=$("#myinput")[0].files
-	for(var i=0;i<files.length;i++){
-		alert(files[i].name)
-	} 
-} */
 </script>
 <body>
 <ul class="nav nav-tabs">
@@ -91,7 +84,7 @@ $(function(){
 <div class="tab-content">
 <div class="tab-pane active" id="textPane">
 <textarea name="text" rows="15" cols="120"></textarea><br/>
-<button id="textSub" type="submit">保存</button>
+<button id="textSub" type="submit" class="btn">保存</button>
 <p style="white-space:pre"></p>
 
 </div>

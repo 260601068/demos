@@ -24,8 +24,28 @@ public class Comment {
 		return treeViewObject.getNodes();
 	}
 	
+//	public static TreeViewObject getTreeViewObject(Comment comment){
+//		TreeViewObject treeViewObject=new TreeViewObject(comment.getComId(),comment.getComContent(),null);
+//		List<Comment> childComments=comment.getComments();
+//		if(childComments!=null && childComments.size()>0){
+//			for(Comment chiledComment : childComments){
+//				TreeViewObject childTreeViewObject=getTreeViewObject(chiledComment);
+//				if(childTreeViewObject!=null){
+//					List<TreeViewObject> childTreeViewObjects=treeViewObject.getNodes();
+//					if(childTreeViewObjects==null) {
+//						childTreeViewObjects=new ArrayList<TreeViewObject>();
+//						treeViewObject.setNodes(childTreeViewObjects);
+//					}
+//					childTreeViewObjects.add(childTreeViewObject);
+//				}
+//			}
+//		}
+//		return treeViewObject;
+//	}
+	
+	//仅仅为了满足bbs的业务而修改，上面的方法是标准
 	public static TreeViewObject getTreeViewObject(Comment comment){
-		TreeViewObject treeViewObject=new TreeViewObject(comment.getComId(),comment.getComContent(),null);
+		TreeViewObject treeViewObject=new TreeViewObject(comment.getComId(),comment.getComByName()+" : "+comment.getComContent(),null);
 		List<Comment> childComments=comment.getComments();
 		if(childComments!=null && childComments.size()>0){
 			for(Comment chiledComment : childComments){

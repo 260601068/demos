@@ -66,26 +66,29 @@ function deleteComment(){
 	})
 }
 </script>
-<body class="container-fluid">
-<h4 style="text-align:right">欢迎${session.user.user_name }!</h4>
-<h1 style="text-align:center">${subject.title }</h1>
+<body class="container">
+<h4 class="text-right">欢迎${session.user.user_name }!</h4>
+<h2 class="text-center text-muted">${subject.title }</h2>
+<h4 class="text-center text-muted">wjl</h4>
 <hr>
 <s:iterator value="#resources" var="resource">
 <s:if test="#resource.type=='T'.toString()">
 <div style="white-space:pre">${resource.content }</div><br/>
 </s:if>
 <s:if test="#resource.type=='P'.toString()">
-<img src="${resource.content }"><br/>
+<img src="${resource.content }" style="width:728px"><br/>
 </s:if>
 <s:if test="#resource.type=='V'.toString()">
-<video src="${resource.content }" controls="controls" width="350px" height="350px">
+<video src="${resource.content }" controls="controls" width="728px">
 your browser does not support the video tag
 </video><br/>
 </s:if>
 </s:iterator>
 
-<label style="display: none">${comment_list_treeview}</label>
+<div style="padding-top:50px">
+<label style="display: none;">${comment_list_treeview}</label>
 <div id="tree"></div>
+</div>
 <button class="btn btn-primary btn-lg" data-toggle="modal" style="display:none"
    data-target="#myModal">
    开始演示模态框
@@ -123,6 +126,6 @@ your browser does not support the video tag
       </div>
 </div>
 </div>
-<button id="addComment" style="background:lightblue">回复新评论</button>
+<button id="addComment" style="background:lightblue;margin-bottom:50px;">回复新评论</button>
 </body>
 </html>

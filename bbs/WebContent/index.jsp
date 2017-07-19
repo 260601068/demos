@@ -6,20 +6,34 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <script type="text/javascript">
 function regist() {
 	$("#login_form").prop("action","login_regist.action")
 }
 </script>
 <body>
-	<form id="login_form" action="login_login.action" method="post">
-	<label>${logininfo }</label><br/>
-	用户名：<input name="username" type="text"><br/>
-	密码：<input name="password" type="password"><br/>
-	<input type="submit" value="登录">
-	<input type="submit" value="注册" onclick="regist()">
+<div class="container" style="padding:180px 300px;">
+	<form id="login_form" class="form-horizontal" action="login_login.action" method="post">
+	<div class="form-group text-center text-danger"><label>${logininfo }</label></div>
+	<div class="form-group">
+	<label class="col-sm-2 control-label">用户名：</label>
+	<div class="col-sm-10"><input name="username" class="form-control" type="text"></div>
+	</div>
+	<div class="form-group">
+	<label class="col-sm-2 control-label">密码：</label>
+	<div class="col-sm-10"><input name="password" class="form-control" type="password"></div>
+	</div>
+	<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-10">
+	<input type="submit" class="btn btn-default" value="登录">
+	<input type="submit" class="btn btn-default" value="注册" onclick="regist()">
+	</div>
+	</div>
 	</form>
+</div>
 </body>
 </html>
