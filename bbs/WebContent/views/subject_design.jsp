@@ -15,9 +15,6 @@ $(function(){
 	
 	$("#textSub").on("click",function(){
  		var text=$("[name='text']").val()
- 		
- 		var reg=new RegExp("\r\n","g")
- 		text=text.replace(reg,"<br>")
  		$.ajax({
 			 url: "design_addText",
 			 type: "POST",
@@ -69,8 +66,8 @@ $(function(){
 			 type: "GET",
 			 data: {"title":title},
 			 dataType: "json",
-			 success: function(){
-				 
+			 success: function(data){
+				 location.href="../subject_detail?sub_id="+data
 			 }
 		})  
 	}) 

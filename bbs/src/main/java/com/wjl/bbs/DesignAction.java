@@ -37,6 +37,7 @@ public class DesignAction extends ActionSupport{
 	private File myfile;
 	private String myfileFileName;
 	private String myfileContentType;
+	private Integer publishSubId;
 
 	public File getMyfile() {
 		return myfile;
@@ -60,6 +61,14 @@ public class DesignAction extends ActionSupport{
 
 	public void setMyfileContentType(String myfileContentType) {
 		this.myfileContentType = myfileContentType;
+	}
+
+	public Integer getPublishSubId() {
+		return publishSubId;
+	}
+
+	public void setPublishSubId(Integer publishSubId) {
+		this.publishSubId = publishSubId;
 	}
 
 	@Autowired
@@ -148,9 +157,10 @@ public class DesignAction extends ActionSupport{
 			Map<String,Object> map=new HashMap<String,Object>();
 			map.put("title", title);
 			map.put("create_by", user.get("user_id"));
-			namedParameterJdbcTemplate.update("insert into subject(title,create_time,create_by) values(:title,CURRENT_TIMESTAMP,:create_by)", map);
-			Integer sub_id=namedParameterJdbcTemplate.queryForObject("select last_insert_id()", map, Integer.class);
-			map.put("sub_id", sub_id);
+			KeyHolder keyHolder=new GeneratedKeyHolder();
+			namedParameterJdbcTemplate.update("insert into subject(title,create_time,create_by) values(:title,CURRENT_TIMESTAMP,:create_by)", new MapSqlParameterSource(map),keyHolder);
+			publishSubId=new Integer(keyHolder.getKey().intValue());
+			map.put("sub_id", publishSubId);
 			for(int i=0;i<resIdList.size();i++){
 				map.put("res_id", resIdList.get(i));
 				namedParameterJdbcTemplate.update("insert subject_resource(sub_id,res_id) values(:sub_id, :res_id)",map);

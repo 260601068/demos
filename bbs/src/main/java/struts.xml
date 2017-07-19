@@ -22,7 +22,9 @@
 			<result name="addPicture" type="json"></result>
 			<result name="addVideo" type="json"></result>
 			<result name="addText" type="json"></result>
-			<result name="publish" type="json"></result>
+			<result name="publish" type="json">
+			<param name="root">publishSubId</param>
+			</result>
 		</action>
 		<action name="comment_*" class="commentAction" method="{1}">
 			<result name="reload" type="json"></result>

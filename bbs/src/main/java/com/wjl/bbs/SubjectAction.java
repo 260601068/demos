@@ -33,8 +33,11 @@ public class SubjectAction extends ActionSupport{
 		Map<String,Object> map=new HashMap<String,Object>();
 		map.put("sub_id", ServletActionContext.getRequest().getParameter("sub_id"));
 		Map<String,Object> subjectDetail=null;
+		List<Map<String,Object>> resources=null;
 		try {
 			subjectDetail=namedParameterJdbcTemplate.queryForMap("SELECT s.sub_id,s.title,s.sub_content,s.create_time,s.create_by,u.user_name FROM SUBJECT s LEFT JOIN USER u ON s.create_by=u.user_id where sub_id=:sub_id", map);
+			
+			resources=namedParameterJdbcTemplate.queryForList("SELECT sr.sub_id,r.* FROM subject_resource sr LEFT JOIN resource r ON sr.res_id=r.res_id WHERE sr.sub_id=:sub_id ORDER BY r.res_id", map);
 		} catch (DataAccessException e) {
 		}
 		if(subjectDetail!=null && subjectDetail.size()>0){
@@ -44,7 +47,7 @@ public class SubjectAction extends ActionSupport{
 			ActionContext.getContext().put("comment_list", Comment.getCommentTreeList(commentData, userData));
 			ActionContext.getContext().put("subject", subjectDetail);
 		}
-		
+		ActionContext.getContext().put("resources", resources);
 		return "subject_detail";
 	}
 }

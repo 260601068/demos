@@ -66,10 +66,24 @@ function deleteComment(){
 	})
 }
 </script>
-<body>
-<s:debug></s:debug><hr/>
+<body class="container-fluid">
 <h4 style="text-align:right">欢迎${session.user.user_name }!</h4>
 <h1 style="text-align:center">${subject.title }</h1>
+<hr>
+<s:iterator value="#resources" var="resource">
+<s:if test="#resource.type=='T'.toString()">
+<div style="white-space:pre">${resource.content }</div><br/>
+</s:if>
+<s:if test="#resource.type=='P'.toString()">
+<img src="${resource.content }"><br/>
+</s:if>
+<s:if test="#resource.type=='V'.toString()">
+<video src="${resource.content }" controls="controls" width="350px" height="350px">
+your browser does not support the video tag
+</video><br/>
+</s:if>
+</s:iterator>
+
 <label style="display: none">${comment_list_treeview}</label>
 <div id="tree"></div>
 <button class="btn btn-primary btn-lg" data-toggle="modal" style="display:none"
