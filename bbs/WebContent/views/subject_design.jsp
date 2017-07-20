@@ -97,6 +97,7 @@ $(function(){
 <div class="tab-pane" id="videoPane">
 <form id="videoForm" enctype="multipart/form-data">
 <input name="myfile" type="file"><input id="videoSub" type="button" value="上传">
+<span class="text-danger"><small>（目前仅支持上传500M以内的H264编码的.mp4格式视频）</small></span>
 </form>
 <video src="" controls="controls"  autoplay width="350px" height="350px">
 your browser does not support the video tag

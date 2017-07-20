@@ -4,7 +4,7 @@
 	"http://struts.apache.org/dtds/struts-2.5.dtd">
 
 <struts>
-	 <constant name="struts.multipart.maxSize" value="100000000"/>
+	 <constant name="struts.multipart.maxSize" value="500000000"/>
 	<package name="default" extends="struts-default,json-default">
 		<global-allowed-methods>regex:.*</global-allowed-methods>
 		<action name="login_*" class="loginAction" method="{1}">
@@ -17,7 +17,7 @@
 		</action>
 		<action name="design_*" class="designAction" method="{1}">
 		<interceptor-ref name="defaultStack">
-		<param name="fileUpload.maximumSize">100000000</param>
+		<param name="fileUpload.maximumSize">500000000</param>
 		</interceptor-ref>
 			<result name="addPicture" type="json"></result>
 			<result name="addVideo" type="json"></result>
