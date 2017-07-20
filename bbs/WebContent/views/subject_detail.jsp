@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -69,7 +70,7 @@ function deleteComment(){
 <body class="container">
 <h4 class="text-right">欢迎${session.user.user_name }!</h4>
 <h2 class="text-center text-muted">${subject.title }</h2>
-<h4 class="text-center text-muted">wjl</h4>
+<h4 class="text-center text-muted">${subject.user_name }&nbsp;&nbsp;&nbsp;${fn:substringBefore(subject.create_time,".") }</h4>
 <hr>
 <s:iterator value="#resources" var="resource">
 <s:if test="#resource.type=='T'.toString()">

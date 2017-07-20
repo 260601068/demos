@@ -24,7 +24,7 @@ public class SubjectAction extends ActionSupport{
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
 	public String allSubject(){
-		List<Map<String,Object>> subjects=namedParameterJdbcTemplate.queryForList("select sub_id,title from subject", new HashMap());
+		List<Map<String,Object>> subjects=namedParameterJdbcTemplate.queryForList("SELECT sub_id,title,user_id,user_name,create_time FROM SUBJECT LEFT JOIN USER ON subject.create_by=user.user_id", new HashMap());
 		ActionContext.getContext().put("subjects", subjects);
 		return SUCCESS;
 	}

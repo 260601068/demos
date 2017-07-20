@@ -16,7 +16,8 @@ function regist() {
 }
 </script>
 <body>
-<div class="container" style="padding:180px 300px;">
+<div class="container" style="padding:140px 300px;">
+<h1 class="text-center">BBS Demo</h1>
 	<form id="login_form" class="form-horizontal" action="login_login.action" method="post">
 	<div class="form-group text-center text-danger"><label>${logininfo }</label></div>
 	<div class="form-group">

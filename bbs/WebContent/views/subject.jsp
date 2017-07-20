@@ -28,7 +28,7 @@ a:hover {
 <s:iterator value="#subjects" var="subject">
 <li>
 <div class="col-sm-11" style="padding:0"><h4 style="margin-bottom:0"><a href="subject_detail?sub_id=${subject.sub_id }">${subject.title }</a></h4></div>
-<div class="col-sm-1 text-center" style="padding:0"><h4 class="text-muted"  style="margin-bottom:0">wjl</h4></div>
+<div class="col-sm-1 text-center" style="padding:0"><h4 class="text-muted"  style="margin-bottom:0">${subject.user_name }</h4></div>
 </li>
 </s:iterator>
 </ul>
