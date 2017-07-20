@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
-<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
 function regist() {
 	$("#login_form").prop("action","login_regist.action")
