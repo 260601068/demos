@@ -1,7 +1,6 @@
 package com.wjl.bbs;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import com.opensymphony.xwork2.ActionSupport;
 @Controller
 @Scope("prototype")
 public class LoginAction extends ActionSupport{
-	
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
