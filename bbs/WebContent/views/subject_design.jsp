@@ -75,6 +75,8 @@ $(function(){
 })
 </script>
 <body>
+<div class="container">
+<h4 class="text-right"><span class="text-danger">欢迎</span>&nbsp;${session.user.user_name }&nbsp;<span class="text-danger">!</span>&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="../login_logout">退出</a></small></h4>
 <ul class="nav nav-tabs">
 <li class="active"><a href="#textPane" data-toggle="tab">添加文本</a></li>
 <li><a href="#picturePane" data-toggle="tab">添加图片</a></li>
@@ -121,6 +123,6 @@ your browser does not support the video tag
 </div>
 </div>
 </div>
-
+</div>
 </body>
 </html>

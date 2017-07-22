@@ -17,7 +17,7 @@ a:hover {
 <body>
 <div class="container">
 
-<h4 class="text-right">欢迎${session.user.user_name }!</h4>
+<h4 class="text-right"><span class="text-danger">欢迎</span>&nbsp;${session.user.user_name }&nbsp;<span class="text-danger">!</span>&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="login_logout">退出</a></small></h4>
 <h2 class="text-center text-muted" style="padding-top:20px">全部主题列表</h2>
 
 <ul class="list-unstyled">

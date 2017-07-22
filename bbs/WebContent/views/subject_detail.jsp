@@ -68,7 +68,7 @@ function deleteComment(){
 }
 </script>
 <body class="container">
-<h4 class="text-right">欢迎${session.user.user_name }!</h4>
+<h4 class="text-right"><span class="text-danger">欢迎</span>&nbsp;${session.user.user_name }&nbsp;<span class="text-danger">!</span>&nbsp;&nbsp;&nbsp;&nbsp;<small><a href="login_logout">退出</a></small></h4>
 <h2 class="text-center text-muted">${subject.title }</h2>
 <h4 class="text-center text-muted">${subject.user_name }&nbsp;&nbsp;&nbsp;${fn:substringBefore(subject.create_time,".") }</h4>
 <hr>

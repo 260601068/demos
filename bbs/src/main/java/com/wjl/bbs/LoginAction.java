@@ -53,6 +53,11 @@ public class LoginAction extends ActionSupport{
 		return "login";
 	}
 	
+	public String logout(){
+		ActionContext.getContext().getSession().remove("user");
+		return "login";
+	}
+	
 	public String regist(){
 		Map<String,String> userMap=new HashMap<String,String>();
 		userMap.put("username", username);
