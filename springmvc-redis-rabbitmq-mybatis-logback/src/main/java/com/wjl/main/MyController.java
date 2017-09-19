@@ -13,6 +13,7 @@ public class MyController {
 	@RequestMapping("/success")
 	public String toSuccess(){
 		logger.info("I'm {},age is {}","wjl",27);
+		logger.debug("wjl's debug log");
 		return "success";
 	}
 	
