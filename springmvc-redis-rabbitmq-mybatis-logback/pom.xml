@@ -47,37 +47,38 @@
 			<version>5.1.37</version>
 		</dependency>
 		
-<!-- <dependency>          
+		
+<!-- 单独使用logback日志（不与spring配合）时需要以下四个依赖包
+<dependency>          
     <groupId>org.slf4j</groupId>  
     <artifactId>slf4j-api</artifactId>  
     <version>1.7.25</version>  
-</dependency> -->  
-  
+</dependency>  
 <dependency>  
     <groupId>ch.qos.logback</groupId>  
     <artifactId>logback-classic</artifactId>  
     <version>1.2.3</version>  
 </dependency>  
-  
 <dependency>  
     <groupId>ch.qos.logback</groupId>  
     <artifactId>logback-core</artifactId>  
     <version>1.2.3</version>  
 </dependency>  
-
-<!-- 不与spring配合使用时，可以用logback-access替换ext-spring和jcl-over-slf4j两个依赖
-	，也可以在spring应用中使用access而不用那两个依赖 ，区别暂时还不知道-->
-<!-- <dependency>
+<dependency>
     <groupId>ch.qos.logback</groupId>
     <artifactId>logback-access</artifactId>
     <version>1.2.3</version>
-</dependency> -->
-
+</dependency>
+ -->
+ 
+ <!-- 与spring整合使用logback日志时，仅需要引入必须的logback-ext-spring依赖即可，
+ 	     该依赖会自动引入slf4j-api，logback-classic，logback-core三个依赖，自身相当于logback-access的spring版 -->
 <dependency>  
     <groupId>org.logback-extensions</groupId>  
     <artifactId>logback-ext-spring</artifactId>  
     <version>0.1.4</version>  
 </dependency>  
+<!-- jcl-over-slf4j不是spring必须的logback日志依赖包， 其作用是可以详细的显示spring框架中的debug日志-->
 <dependency>  
     <groupId>org.slf4j</groupId>  
     <artifactId>jcl-over-slf4j</artifactId>  

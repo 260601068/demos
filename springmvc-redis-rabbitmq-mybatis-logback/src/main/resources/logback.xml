@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+　　scan:xml文件如果发生改变，将会被重新加载，默认值是true
+　　scanPeriod:间隔扫描xml是否改变，scan为true是生效。默认是ms,默认间隔时间是1分钟。
+　　debug:当此属性设置为true时，将打印出logback.xml内部日志消息，默认值是false。　
+-->
 <configuration scan="true" scanPeriod="30 seconds">
 
+<!-- 自定义属性 -->
 <property name="logPath" value="${catalina.home}/logs"></property>
 <property name="maxHistory" value="30"/> 
 
@@ -11,6 +17,7 @@
 </appender>
 
 <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
 <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 <fileNamePattern>${logPath}/log.%d{yyyy-MM-dd}.log</fileNamePattern>
 <maxHistory>${maxHistory}</maxHistory>
@@ -19,32 +26,48 @@
 <pattern>%d{HH:mm:ss.SSS} [%thread] [%-5level] [%logger{36}.%M] [%-5line]- %m%n </pattern>
 <charset>UTF-8</charset>
 </encoder>
-<!--    可以过滤成仅记录debug级别的日志（不包括info，error）    
+<!--    可以过滤成仅记录debug级别的日志（不包括info，warn，error）    
 		 <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>DEBUG</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter> 
 -->
+<!-- 	可以过滤成记录日志级别高于warn的所有日志，包括warn和error
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+		<level>WARN</level>
+		</filter>
+ -->
 </appender>
 
     <!--打印mybatis的SQL语句-->
-    <logger name="com.ibatis" level="DEBUG" />
+<!--     <logger name="com.ibatis" level="DEBUG" />
     <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />
     <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG" />
     <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" />
     <logger name="java.sql.Connection" level="DEBUG" />
     <logger name="java.sql.Statement" level="DEBUG" />
-    <logger name="java.sql.PreparedStatement" level="DEBUG" />
+    <logger name="java.sql.PreparedStatement" level="DEBUG" /> -->
     
-<!--     <logger name="com.wjl" level="info"/> -->
+    <!-- 1、将com.wjl包下的所有文件的日志等级定为info（会覆盖继承于root的默认日志等级），表示仅info和info以上等级的日志会被处理
+    	 2、additivity表示是否将打印信息向上(root)传递处理，默认为true。
+          	a.若像上传递则满足当前logger日志等级的日志依然会被root定义的所有appender处理（无视root自身的日志等级），可能会造成重复记录两次的情况；
+    		b.若不向上传递处理，则满足当前logger日志等级的日志仅会先被自身定义的appender处理
+    		c.特别注意该配置下，com.wjl包中的debug日志不会被root的appender处理（仔细看a条目）
+    -->
+    <logger name="com.wjl" level="info" additivity="false">
+	<appender-ref ref="console"/>
+    </logger>
     
-    <!-- addtivity表示是否将打印信息向上传递，默认为true -->
+<!-- root的日志等级是应用中所有无自定义的logger日志等级的日志的日志等级的默认值 ，
+	 高于等于这个默认日志等级的日志都会被其中定义的appender处理-->
 <root level="debug">  
-    <appender-ref ref="console"/>   
+	<appender-ref ref="console"/>
     <appender-ref ref="file"/>  
 </root>  
 </configuration>
+
+<!-- 通常使用的日志级别从高到低：ERROR,WARN,INFO,DEBUG -->
 
 <!-- pattern中转换符说明：
 %logger{x},%class{x} : 表示类名或全类名,x为0表示类名，无"{x}"表示全类名

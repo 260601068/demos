@@ -12,6 +12,8 @@ public class MyController {
 	
 	@RequestMapping("/success")
 	public String toSuccess(){
+		logger.error("wjl's error log");
+		logger.warn("wjl's warn log");
 		logger.info("I'm {},age is {}","wjl",27);
 		logger.debug("wjl's debug log");
 		return "success";
