@@ -36,6 +36,11 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>4.2.1.RELEASE</version>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>1.7.4.RELEASE</version>
+        </dependency>
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
