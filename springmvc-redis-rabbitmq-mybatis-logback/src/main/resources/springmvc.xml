@@ -25,55 +25,6 @@
 		<property name="suffix" value=".jsp"></property>
 		
 	</bean>
-<!-- 	    <bean id="connectionFactory"
-        class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-        <property name="username" value="${mq.user}" />
-        <property name="password" value="${mq.pwd}" />
-        <property name="host" value="${mq.address}" />
-        <property name="port" value="${mq.port}" />
-        <property name="virtualHost" value="${mq.vhost}" />
-    </bean>
-	
-    <bean id="rabbitAdmin" class="org.springframework.amqp.rabbit.core.RabbitAdmin">
-        <constructor-arg ref="connectionFactory" />
-    </bean>
-
-    <bean id="serializerMessageConverter"
-        class="org.springframework.amqp.support.converter.SimpleMessageConverter" />
-        
-    <bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
-        <constructor-arg ref="connectionFactory" />
-        <property name="exchange" value="${mq.exchange}" />
-        <property name="routingKey" value="${mq.routingKey}" />
-        <property name="queue" value="${mq.queue}" />
-        <property name="messageConverter" ref="serializerMessageConverter" />
-    </bean>
-
-    <bean id="queue" class="org.springframework.amqp.core.Queue">
-        <constructor-arg index="0" value="${mq.queue}"></constructor-arg>
-        <constructor-arg index="1" value="true"></constructor-arg>
-        <constructor-arg index="2" value="false"></constructor-arg>
-        <constructor-arg index="3" value="false"></constructor-arg>
-    </bean>
-
-    <bean id="rmqProducer" class="com.xxxx.RmqProducer">
-        <property name="rabbitTemplate" ref="rabbitTemplate" />
-    </bean>
-    <bean id="rmqConsumer" class="com.xxxx.RmqConsumer" />
-
-    <bean id="messageListenerAdapter"
-        class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
-        <constructor-arg ref="rmqConsumer" />
-        <property name="defaultListenerMethod" value="rmqConsumeMessage"></property>
-        <property name="messageConverter" ref="serializerMessageConverter"></property>
-    </bean>
-
-    <bean id="listenerContainer"
-        class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
-        <property name="queues" ref="queue"></property>
-        <property name="connectionFactory" ref="connectionFactory"></property>
-        <property name="messageListener" ref="messageListenerAdapter"></property>
-    </bean> -->
 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="user" value="root"></property>
@@ -85,29 +36,41 @@
 	</bean>
 
 	<tx:annotation-driven />
-
+	
+<!-- rabbit:annotation-driven相当于配置类中的@EnableRabbit必不可少 -->
 <rabbit:annotation-driven/>
 <bean id="connectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
 <property name="host" value="localhost"/>
 </bean>
 
+<!-- 消息转换器必须在 RabbitTemplate和RabbitListenerContainerFactory中同时被引用或不被引用；
+	  如果只传递字符串则也可以不定义（推荐定义）MessageConverter，如果需要接收其它类型则必须定义（也可以接收字符串）-->
+<bean id="messageConverter" class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" >
+    <property name="classMapper">
+        <bean class="org.springframework.amqp.support.converter.DefaultClassMapper">
+            <property name="defaultType" value="com.wjl.main.User"/>
+        </bean>
+    </property>
+</bean>
 
 <bean id="rabbitListenerContainerFactory" class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
 <property name="connectionFactory" ref="connectionFactory"></property>
+<property name="messageConverter" ref="messageConverter"></property>
 <property name="concurrentConsumers" value="3"></property>
 <property name="maxConcurrentConsumers" value="10"></property>
 </bean>
 
-<bean id="rabbitAdmin" class="org.springframework.amqp.rabbit.core.RabbitAdmin">
-<constructor-arg ref="connectionFactory"/>
-</bean>
 <bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
 <constructor-arg ref="connectionFactory"/>
+<property name="messageConverter" ref="messageConverter"></property>
 </bean>
+<!-- queue,exchanage,binding都可以在@RabbitListener中声明也可以在这里定义，当应用启动时会
+	  自动在rabbitmq的服务器端创建（如果已经存在，再次声明时属性必须相同，不然报错，然后不重
+	  复创建直接获取）这些信息
 <bean id="queue" class="org.springframework.amqp.core.Queue">
-        <constructor-arg  value="myqueue"></constructor-arg>
+        <constructor-arg  value="myQueue"></constructor-arg>
         <constructor-arg index="1" value="true"></constructor-arg>
         <constructor-arg index="2" value="false"></constructor-arg>
         <constructor-arg index="3" value="false"></constructor-arg>
-</bean>
+</bean> -->
 </beans>
