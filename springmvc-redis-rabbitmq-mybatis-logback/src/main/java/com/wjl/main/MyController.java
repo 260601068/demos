@@ -1,19 +1,25 @@
 package com.wjl.main;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MyController {
+	
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate;
 	
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -26,7 +32,26 @@ public class MyController {
 		logger.warn("wjl's warn log");
 		logger.info("I'm {},age is {}","wjl",27);
 		logger.debug("wjl's debug log");
-		String s="wjl send message from controller with myexhange to myQueue";
+		
+		stringRedisTemplate.opsForValue().set("hello", "redis");
+		ListOperations<String,String> names=stringRedisTemplate.opsForList();
+		//list插入前最好删除同名的list，不然如果之前有该list则不会覆盖而是会继续添加数据
+		stringRedisTemplate.delete("names");
+		names.rightPush("names", "wjl");
+		names.rightPush("names", "dnf");
+		names.rightPush("names", "bbq");
+		Map<String,Object> wjl=new HashMap<String,Object>();
+		wjl.put("name", "wjl");
+		wjl.put("age", "27");
+		wjl.put("gender", "man");
+		stringRedisTemplate.opsForHash().putAll("user",wjl );
+		System.out.println("redis string hello: "+stringRedisTemplate.opsForValue().get("hello"));
+		System.out.println("redis list names: "+stringRedisTemplate.opsForList().range("names", 0, -1));
+		System.out.println("redis map user: "+stringRedisTemplate.opsForHash().entries("user"));
+		System.out.println("redis map user gender: "+stringRedisTemplate.opsForHash().get("user", "gender"));
+		stringRedisTemplate.delete("user");
+		System.out.println("redis map user after delete: "+stringRedisTemplate.opsForHash().entries("user"));
+		
 		rabbitTemplate.convertAndSend("myexchange", "myrouting",new User("wjl",new Integer(27)) , new MessagePostProcessor() {
 			
 			@Override
