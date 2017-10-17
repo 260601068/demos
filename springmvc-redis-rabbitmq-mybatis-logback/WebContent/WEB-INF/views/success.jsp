@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-Success!
+Success!<br>
+Employee:${emp }<br>
+Employees:${emps }
 </body>
 </html>

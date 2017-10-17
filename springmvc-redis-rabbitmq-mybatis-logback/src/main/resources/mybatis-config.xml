@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+	<!-- 将数据库表字段的"_"自动映射为pojo的驼峰模式 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	<!-- 解决oracle数据库没有NULL类型的问题 -->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	<!-- 开启缓存，默认为开启 -->
+		<setting name="cacheEnabled" value="true"/>
+	<!-- 开启懒加载，默认关闭 -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+	<!-- 关闭对象属性的固定式全部查询，新版本默认关闭 -->
+		<setting name="aggressiveLazyLoading" value="false"/>
+	</settings>
+</configuration>

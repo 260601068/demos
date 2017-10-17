@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjl.dao.EmployeeMapper">
+<!-- 所有语句的id必须与对应接口的方法名完全相同 -->
+<!-- 只有一个参数时参数名可以随便写 -->
+  <select id="getEmpById" resultType="com.wjl.main.Employee">
+    select * from employee where id=#{id}
+  </select>
+  
+  <select id="getEmpByIdReturnMap" resultType="map">
+  	select * from employee where id=#{id}
+  </select>
+  
+  <!-- 返回值为List时，resultType只填写具体的对象类型 -->
+  <!-- #{}是预编译的形式，将参数设置到sql语句中可以防止sql注入，${}是直接将参数拼接到sql语句中可能会有安全问题-->
+  <select id="getEmployeesByNameLike" resultType="com.wjl.main.Employee">
+  	select * from employee where name like #{name}
+  </select>
+  
+  <!-- 传递多个参数时必须在对应的接口中使用@Param注解参数名 -->
+  <select id="getEmpByIdAndName" resultType="com.wjl.main.Employee">
+  	select * from employee where id=#{id} and name=#{name}
+  </select>
+  
+  <!-- 表名参数必须用${}不能用#{} -->
+  <select id="getEmpByMap" resultType="com.wjl.main.Employee">
+  	select * from ${table} where id=#{id} and name=#{name}
+  </select>
+  
+  <!-- mysql支持的自增主键插入操作，keyProperty表示插入的自增主键赋值到bean的属性，
+  	插入完成后对应的bean对象的id已经被自动赋予自增的主键值 -->
+  <insert id="addEmployee" useGeneratedKeys="true" keyProperty="id">
+  	insert into employee(name,age) values(#{name},#{age})
+  </insert>
+  
+<!--   oracle支持的自增主键插入操作
+	<insert id="addEmp" databaseId="oracle">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+			select employee_seq.nextval from dual 
+		</selectKey>
+		insert into employees(id,name,age) 
+		values(#{id},#{name},#{age}) 
+	</insert> -->
+  
+  <update id="updateEmployee">
+  	update employee set name=#{name},age=#{age} where id=#{id}
+  </update>
+  
+  <delete id="deleteEmployee">
+  	delete from employee where id=#{id}
+  </delete>
+</mapper>
