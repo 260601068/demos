@@ -3,6 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wjl.dao.EmployeeMapper">
+<!-- 开启二级缓存（仅有mapper级别），默认关闭，对应bean类必须实现序列化接口 ；
+	 仅当sqlSession（包含一级缓存）关闭时，一级缓存数据才保存到二级缓存中；
+	 当创建新sqlSession查询数据时，先从二级缓存中获取数据，如果没有则从一级缓存中取数据，也没有则从数据库查询
+-->
+	<cache></cache>
 <!-- 所有语句的id必须与对应接口的方法名完全相同 -->
 <!-- 只有一个参数时参数名可以随便写 -->
   <select id="getEmpById" resultType="com.wjl.main.Employee">
@@ -19,7 +24,7 @@
   	select * from employee where name like #{name}
   </select>
   
-  <!-- 传递多个参数时必须在对应的接口中使用@Param注解参数名 -->
+  <!-- 传递多个参数时必须在对应的接口中使用@Param注解参数名，也可以根据接口中参数的位置使用param1,param2表示参数引用 -->
   <select id="getEmpByIdAndName" resultType="com.wjl.main.Employee">
   	select * from employee where id=#{id} and name=#{name}
   </select>
@@ -51,4 +56,50 @@
   <delete id="deleteEmployee">
   	delete from employee where id=#{id}
   </delete>
+  
+  <resultMap type="com.wjl.main.Employee" id="empWithDept">
+<!--查询出来的字段名如果与对象的属性名相同则可以不写映射关系（会自动赋值）
+	<id column="id" property="id"/>
+  	<result column="name" property="name"/>
+  	<result column="age" property="age"/> -->
+  	<result column="did" property="dept.id"/>
+  	<result column="dname" property="dept.name"/>
+  </resultMap>
+  
+  <select id="getEmpAndDept" resultMap="empWithDept">
+  	select e.id,e.name,e.age,d.id did,d.name dname from employee e,department d where e.dep_id=d.id and e.id=#{id}
+  </select>
+  
+  <resultMap type="com.wjl.main.Employee" id="empWithDeptStep">
+  	<association property="dept" select="com.wjl.dao.DepartmentMapper.getDeptById" column="dep_id">
+  	</association>
+  </resultMap>
+  
+  <select id="getEmpAndDeptStep" resultMap="empWithDeptStep">
+  	select * from employee where id=#{id}
+  </select>
+  
+  <sql id="empColumn">
+  	id,name,age
+  </sql>
+  
+  <select id="getEmpsByDynamicCondition" resultType="com.wjl.main.Employee">
+  <!-- where标签可以去掉可能存在的前置and；当传递过来的参数仅为一个对象时可以用_parameter表示这个对象 -->
+  	select <include refid="empColumn"></include> from employee
+  	<where>
+  		<if test="emp.name!=null">
+  			name like #{emp.name}
+  		</if>
+  		<if test="emp.age!=null">
+  			and age > #{emp.age}
+  		</if>
+  		<foreach collection="param2" item="id" separator="," open=" and id in (" close=")">
+  			#{id}
+  		</foreach>
+  	</where>
+  </select>
+  
+  <!-- <set></set>标签可以在动态更新时去掉可能出现的后置”,“；
+  		mysql的批量插入可以使用insert into table_name values(*,*,*)(*,*,*)方式 
+  -->
 </mapper>

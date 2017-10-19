@@ -46,4 +46,17 @@ public class EmployeeService {
 	public void deleteEmployee(Integer id){
 		employeeMapper.deleteEmployee(id);
 	}
+	
+	public Employee getEmpAndDept(Integer id){
+		return employeeMapper.getEmpAndDept(id);
+	}
+	
+	public Employee getEmpAndDeptStep(Integer id){
+		return employeeMapper.getEmpAndDeptStep(id);
+	}
+	
+	public List<Employee> getEmpsByDynamicCondition(Employee emp,List<Integer> ids){
+		return employeeMapper.getEmpsByDynamicCondition(emp, ids);
+	}
+	
 }

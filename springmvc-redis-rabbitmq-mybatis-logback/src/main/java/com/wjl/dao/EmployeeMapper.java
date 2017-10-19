@@ -24,4 +24,12 @@ public interface EmployeeMapper {
 	public void updateEmployee(Employee employee);
 	
 	public void deleteEmployee(Integer id);
+	
+	public Employee getEmpAndDept(Integer id);
+	
+	public Employee getEmpAndDeptStep(Integer id);
+	
+	public List<Employee> getEmpsBydeptId(Integer id);
+	
+	public List<Employee> getEmpsByDynamicCondition(@Param("emp") Employee emp,@Param("ids")List<Integer> ids);
 }

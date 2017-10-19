@@ -9,6 +9,7 @@
 <body>
 Success!<br>
 Employee:${emp }<br>
-Employees:${emps }
+Employees:${emps }<br>
+Department:${dept }
 </body>
 </html>

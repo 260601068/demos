@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjl.dao.DepartmentMapper">
+	<cache-ref namespace="com.wjl.dao.EmployeeMapper"/>
+	<select id="getDeptById" resultType="com.wjl.main.Department">
+		select * from department where id=#{id}
+	</select>
+
+	<resultMap type="com.wjl.main.Department" id="DeptWithEmps">
+ 	<!-- resultMap中包含collection标签时表查询字段与对象属性的映射关系必须写 -->
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<!-- collection不能分布查询 -->
+		<collection property="emps" ofType="com.wjl.main.Employee">
+			<id property="id" column="eid"/>
+			<result property="name" column="ename"/>
+			<result property="age" column="age"/>
+		</collection>
+	</resultMap>
+
+	<select id="getDeptWithEmpsById" resultMap="DeptWithEmps">
+		SELECT d.*,e.id eid,e.name ename,e.age FROM department d LEFT JOIN employee e ON d.id=e.dep_id WHERE d.id=#{id}
+	</select>
+</mapper>

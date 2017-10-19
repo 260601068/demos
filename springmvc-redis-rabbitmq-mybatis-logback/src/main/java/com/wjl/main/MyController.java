@@ -1,5 +1,7 @@
 package com.wjl.main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.wjl.service.DepartmentService;
 import com.wjl.service.EmployeeService;
 
 @Controller
@@ -32,6 +35,9 @@ public class MyController {
 	
 	@Autowired
 	private EmployeeService employeeService;
+	
+	@Autowired
+	private DepartmentService departmentService;
 	
 	private Logger logger=LoggerFactory.getLogger(MyController.class);
 	
@@ -72,6 +78,15 @@ public class MyController {
 		//执行receiveAndConvert方法时服务端必须已经创建myQueue,不然报错
 		User user = (User) rabbitTemplate.receiveAndConvert("myQueue");
 		System.out.println("from controller sync receivier: "+user);
+		return "success";
+	}
+	
+	@RequestMapping("/mybatis/testSecondLevelCache")
+	public String testSecondLevelCache(){
+		Employee employee=employeeService.getEmpById(1);
+		System.out.println("employee: "+employee);
+		Employee employee2=employeeService.getEmpById(1);
+		System.out.println("employee2: "+employee2);
 		return "success";
 	}
 	
@@ -145,6 +160,50 @@ public class MyController {
 	@RequestMapping("/mybatis/deleteEmployee")
 	public String deleteEmployee(@RequestParam("id") int id,Map<String,Object> map){
 		employeeService.deleteEmployee(id);
+		return "success";
+	}
+	
+	@RequestMapping("/mybatis/getEmpAndDept")
+	public String getEmpAndDept(@RequestParam("id") int id,Map<String,Object> map){
+		Employee employee=employeeService.getEmpAndDept(id);
+		map.put("emp", employee);
+		System.out.println("employee: "+employee);
+		return "success";
+	}
+	
+	@RequestMapping("/mybatis/getEmpAndDeptStep")
+	public String getEmpAndDeptStep(@RequestParam("id") int id,Map<String,Object> map){
+		Employee employee=employeeService.getEmpAndDeptStep(id);
+		map.put("emp", employee);
+		System.out.println("employee: "+employee);
+		return "success";
+	}
+	
+	@RequestMapping("/mybatis/getDeptWithEmpsById")
+	public String getDeptWithEmpsById(@RequestParam("id") int id,Map<String,Object> map){
+		Department department=departmentService.getDeptWithEmpsById(id);
+		map.put("dept", department);
+		System.out.println("department: "+department);
+		return "success";
+	}
+	
+	@RequestMapping("/mybatis/getEmpsByDynamicCondition")
+	public String getEmpsByDynamicCondition(@RequestParam(value="ids") String ids,@RequestParam(value="name",required=false) String name,@RequestParam(value="age",required=false) Integer age,Map<String,Object> map){
+		List<String> _ids=Arrays.asList(ids.split(","));
+		List<Integer> list=new ArrayList<>();
+		for (String s : _ids) {
+			list.add(Integer.valueOf(s));
+		}
+		Employee employee=new Employee();
+		if(name!=null && name!="") {
+		name="%"+name+"%";
+		employee.setName(name);
+		}
+		if(age!=null)
+		employee.setAge(age);
+		List<Employee> employees=employeeService.getEmpsByDynamicCondition(employee,list);
+		map.put("emps", employees);
+		System.out.println("employees: "+employees);
 		return "success";
 	}
 }
