@@ -102,4 +102,9 @@
   <!-- <set></set>标签可以在动态更新时去掉可能出现的后置”,“；
   		mysql的批量插入可以使用insert into table_name values(*,*,*)(*,*,*)方式 
   -->
+  
+    <!-- 使用该方法测试PageHelper的分页 -->
+  <select id="getEmps" resultType="com.wjl.main.Employee">
+  	select * from employee
+  </select>
 </mapper>

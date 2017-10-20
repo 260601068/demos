@@ -69,5 +69,10 @@
 动态查员工（ids,like name,>age）：<input type="text" name="ids"><input type="text" name="name"><input type="text" name="age">
 <input type="submit" value="提交">
 </form>
+<hr/>
+<form action="mybatis/getEmpsByPage" method="get">
+查员工分页（pageNum,pageSize）：<input type="text" name="pageNum"><input type="text" name="pageSize">
+<input type="submit" value="提交">
+</form>
 </body>
 </html>

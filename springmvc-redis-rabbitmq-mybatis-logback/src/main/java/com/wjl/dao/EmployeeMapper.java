@@ -32,4 +32,6 @@ public interface EmployeeMapper {
 	public List<Employee> getEmpsBydeptId(Integer id);
 	
 	public List<Employee> getEmpsByDynamicCondition(@Param("emp") Employee emp,@Param("ids")List<Integer> ids);
+	
+	public List<Employee> getEmps();
 }

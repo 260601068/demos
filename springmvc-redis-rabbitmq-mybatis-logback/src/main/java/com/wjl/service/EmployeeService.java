@@ -59,4 +59,7 @@ public class EmployeeService {
 		return employeeMapper.getEmpsByDynamicCondition(emp, ids);
 	}
 	
+	public List<Employee> getEmps(){
+		return employeeMapper.getEmps();
+	}
 }

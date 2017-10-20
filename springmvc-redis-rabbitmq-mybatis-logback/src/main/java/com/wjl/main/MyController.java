@@ -21,6 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.wjl.service.DepartmentService;
 import com.wjl.service.EmployeeService;
 
@@ -204,6 +206,30 @@ public class MyController {
 		List<Employee> employees=employeeService.getEmpsByDynamicCondition(employee,list);
 		map.put("emps", employees);
 		System.out.println("employees: "+employees);
+		return "success";
+	}
+	
+	@RequestMapping("/mybatis/getEmpsByPage")
+	public String getEmpsByPage(@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize,Map<String,Object> map){
+		/*使用mybatis的PageHelper分页插件分页，仅需调用该静态方法实现分页，
+		 * pageNum:要显示那一页（1开始），pageSize：每页显示的记录数，age：表示按照那个字段排序，
+		 * 如果要显示分页的详细信息可以创建pageInfo对象（没有需求可以不创建），其中第二个参数表示要在前端显示的所有页码（会自动调节）
+		 * */
+		PageHelper.startPage(pageNum, pageSize, "age");
+		List<Employee> employees=employeeService.getEmps();
+		PageInfo<Employee> pageInfo = new PageInfo<>(employees, 3);
+		map.put("emps", employees);
+		for (Employee employee : employees) {
+			System.out.println(employee);
+		}
+		System.out.println("总页数："+pageInfo.getPages());
+		System.out.println("当前页："+pageInfo.getPageNum());
+		System.out.println("总记录数："+pageInfo.getTotal());
+		System.out.println("每页记录数："+pageInfo.getPageSize());
+		System.out.println("是否最后一页："+pageInfo.isIsLastPage());
+		System.out.println("显示连续的页码：");
+		int[] nums=pageInfo.getNavigatepageNums();
+		System.out.println(Arrays.toString(nums));
 		return "success";
 	}
 }

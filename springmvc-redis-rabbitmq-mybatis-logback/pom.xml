@@ -75,6 +75,12 @@
 		    <artifactId>mybatis</artifactId>
 		    <version>3.4.5</version>
 		</dependency>
+		<!-- mybatis的分页插件 -->
+		<dependency>
+		    <groupId>com.github.pagehelper</groupId>
+		    <artifactId>pagehelper</artifactId>
+		    <version>5.1.2</version>
+		</dependency>
 		
 <!-- 单独使用logback日志（不与spring配合）时需要以下四个依赖包
 <dependency>          
