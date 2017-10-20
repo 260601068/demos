@@ -48,9 +48,16 @@
 		<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
 	</bean>
 	
+	<!-- 配置mybatis批量操作的SqlSession，仅在需要做批量操作时主动使用该sqlSession -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"/>
+		<constructor-arg name="executorType" value="BATCH"/>
+	</bean>
+	
+	<!-- 配置mybatis的mapper接口扫描路径，主要用来识别mybatis注解 -->
 	<mybatis-spring:scan base-package="com.wjl.dao"/>
 	
-	<!-- 引入redis缓存 -->
+	<!-- 引入redis缓存；redis服务器所在的linux主机必须关闭防火墙（service iptables stop，本地登录除外） -->
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${redis.pool.maxTotal}" /> 
         <property name="maxIdle" value="${redis.pool.maxIdle}" /> 

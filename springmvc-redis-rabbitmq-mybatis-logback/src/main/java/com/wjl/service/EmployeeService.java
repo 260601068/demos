@@ -3,6 +3,7 @@ package com.wjl.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,14 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeMapper employeeMapper;
 	
+	/*该sqlSession为spring配置文件中配置的专门用来批量操作的SqlSession*/
+	@Autowired
+	private SqlSession sqlSession;
+	
 	public Employee getEmpById(int id){
+		/*如果是批量操作则这样获取mapper
+		EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+		*/
 		return employeeMapper.getEmpById(id);
 	}
 	
